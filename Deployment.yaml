@@ -1,0 +1,34 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: samplewebapi-deployment
+  labels:
+    app: samplewebapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: samplewebapi
+  template:
+    metadata:
+      labels:
+        app: samplewebapi
+    spec:
+      containers:
+      - name: samplewebapi
+        image: myazurecontainerregistrycr.azurecr.io/samplewebapiimage:latest
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: samplewebapisecret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: samplewebapi-service
+spec:
+ type: LoadBalancer
+ ports:
+ - port: 80
+ selector:
+   app: menuitemlisting
